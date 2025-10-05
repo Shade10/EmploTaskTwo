@@ -78,6 +78,7 @@
       <DependentUpon>EmploTaskDBContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EmployeeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -90,7 +91,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EmploTaskTwo.Domain\EmploTaskTwo.Domain.csproj">
+      <Project>{CC2343CE-E6D6-4A00-A6D1-5F08036AC5A7}</Project>
+      <Name>EmploTaskTwo.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Context\EmploTaskDBContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

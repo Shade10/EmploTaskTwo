@@ -76,6 +76,40 @@ namespace EmploTaskTwo.Application.Services
             return hoursUsed / ApplicationConstants.HoursPerWorkDay;
         }
 
+        public int CountFreeDaysForEmployee(Employee employee, List<Vacation> vacations, VacationPackage vacationPackage)
+        {
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee), ApplicationConstants.ErrorNullEmployee);
+            }
+
+            if (vacations == null)
+            {
+                throw new ArgumentNullException(nameof(vacations), ApplicationConstants.ErrorNullVacations);
+            }
+
+            if (vacationPackage == null)
+            {
+                throw new ArgumentNullException(nameof(vacationPackage), ApplicationConstants.ErrorNullVacationPackage);
+            }
+
+            var currentYear = DateTime.Now.Year;
+
+            var hoursUsed = vacations
+                .Where(v => v.EmployeeId == employee.Id && v.DateSince.Year == currentYear && v.DateUntil < DateTime.Now)
+                .Sum(v => v.NumberOfHours);
+
+            if (hoursUsed == default)
+            {
+                return vacationPackage.GrantedDays;
+            }
+
+            var daysUsed = hoursUsed / ApplicationConstants.HoursPerWorkDay;
+            var freeDays = vacationPackage.GrantedDays - (int)Math.Ceiling(daysUsed);
+
+            return freeDays < ApplicationConstants.MinFreeVacationDays ? ApplicationConstants.MinFreeVacationDays : freeDays;
+        }
+
         private void ValidateTeamName(string teamName)
         {
             if (string.IsNullOrWhiteSpace(teamName))

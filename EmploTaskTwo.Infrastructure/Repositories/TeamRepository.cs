@@ -51,12 +51,14 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             }
         }
 
-        public IList<Team> GetTeamsWithNoVacationInYear(int year)
+        public IQueryable<Team> GetTeamsWithNoVacationInYear(int year)
         {
             return _context.Teams
-                .Where(t => t.Employees.All(e => !e.Vacations.Any(v => v.DateSince.Year == year)))
+                .Where(t => !t.Employees
+                    .Any(e => e.Vacations
+                        .Any(v => v.DateSince.Year == year)))
                 .Select(t => TeamMapper.ToDomain(t))
-                .ToList();
+                .AsQueryable();
         }
     }
 }

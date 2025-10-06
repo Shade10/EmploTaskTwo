@@ -1,12 +1,12 @@
 ﻿using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Repositories;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace EmploTaskTwo.Domain.Interfaces
 {
     public interface IEmployeeRepository : IRepository<Employee>
     {
-        IList<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year);
-        IList<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay = 8);
+        IQueryable<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year);
+        IQueryable<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay = 8);
     }
 }

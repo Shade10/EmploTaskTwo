@@ -2,7 +2,6 @@
 using EmploTaskTwo.Domain.Interfaces;
 using EmploTaskTwo.Infrastructure.Mappers;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using EFEntities = EmploTaskTwo.Infrastructure.Context;
@@ -52,20 +51,20 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             }
         }
 
-        public IList<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year)
+        public IQueryable<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year)
         {
             return _context.Employees
                 .Where(e => e.Team.Name == teamName && e.Vacations.Any(v => v.DateSince.Year == year))
                 .Select(e => EmployeeMapper.ToDomain(e))
-                .ToList();
+                .AsQueryable();
         }
 
-        public IList<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay)
+        public IQueryable<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay)
         {
             return _context.Employees
                 .Where(e => e.Vacations.Any(v => v.DateSince.Year == year && v.DateUntil < DateTime.Now))
                 .Select(e => EmployeeMapper.ToDomain(e))
-                .ToList();
+                .AsQueryable();
         }
     }
 }

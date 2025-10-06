@@ -1,7 +1,9 @@
 ﻿using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Interfaces;
 using EmploTaskTwo.Infrastructure.Mappers;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using EFEntities = EmploTaskTwo.Infrastructure.Context;
 
@@ -25,21 +27,18 @@ namespace EmploTaskTwo.Infrastructure.Repositories
 
         public Employee GetById(int id)
         {
-            var efEntity = _context.Employees.Find(id);
-            return EmployeeMapper.ToDomain(efEntity);
+            return EmployeeMapper.ToDomain(_context.Employees.Find(id));
         }
 
         public void Add(Employee entity)
         {
-            var efEntity = EmployeeMapper.ToEntity(entity);
-            _context.Employees.Add(efEntity);
+            _context.Employees.Add(EmployeeMapper.ToEntity(entity));
             _context.SaveChanges();
         }
 
         public void Update(Employee entity)
         {
-            var efEntity = EmployeeMapper.ToEntity(entity);
-            _context.Entry(efEntity).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry(EmployeeMapper.ToEntity(entity)).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
@@ -64,7 +63,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IList<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay)
         {
             return _context.Employees
-                .Where(e => e.Vacations.Any(v => v.DateSince.Year == year && v.DateUntil < System.DateTime.Now))
+                .Where(e => e.Vacations.Any(v => v.DateSince.Year == year && v.DateUntil < DateTime.Now))
                 .Select(e => EmployeeMapper.ToDomain(e))
                 .ToList();
         }

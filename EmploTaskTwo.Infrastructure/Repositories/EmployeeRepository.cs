@@ -16,39 +16,57 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             _context = context;
         }
 
-        public void Add(Employee entity)
+        public IQueryable<Employee> Query()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new System.NotImplementedException();
+            return _context.Employees
+                .Select(e => EmployeeMapper.ToDomain(e))
+                .AsQueryable();
         }
 
         public Employee GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var efEntity = _context.Employees.Find(id);
+            return EmployeeMapper.ToDomain(efEntity);
         }
 
-        public IList<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year)
+        public void Add(Employee entity)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public IList<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay = 8)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IQueryable<Employee> Query()
-        {
-            throw new System.NotImplementedException();
+            var efEntity = EmployeeMapper.ToEntity(entity);
+            _context.Employees.Add(efEntity);
+            _context.SaveChanges();
         }
 
         public void Update(Employee entity)
         {
-            throw new System.NotImplementedException();
+            var efEntity = EmployeeMapper.ToEntity(entity);
+            _context.Entry(efEntity).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var efEntity = _context.Employees.Find(id);
+            if (efEntity != null)
+            {
+                _context.Employees.Remove(efEntity);
+                _context.SaveChanges();
+            }
+        }
+
+        public IList<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year)
+        {
+            return _context.Employees
+                .Where(e => e.Team.Name == teamName && e.Vacations.Any(v => v.DateSince.Year == year))
+                .Select(e => EmployeeMapper.ToDomain(e))
+                .ToList();
+        }
+
+        public IList<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay)
+        {
+            return _context.Employees
+                .Where(e => e.Vacations.Any(v => v.DateSince.Year == year && v.DateUntil < System.DateTime.Now))
+                .Select(e => EmployeeMapper.ToDomain(e))
+                .ToList();
         }
     }
 }

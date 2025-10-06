@@ -46,9 +46,7 @@
     <Compile Include="Interfaces\IVacationService.cs" />
     <Compile Include="Services\VacationService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UseCases\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\EmploTaskTwo.Domain\EmploTaskTwo.Domain.csproj">
       <Project>{cc2343ce-e6d6-4a00-a6d1-5f08036ac5a7}</Project>

@@ -113,6 +113,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EmploTaskTwo.Core\EmploTaskTwo.Core.csproj">
+      <Project>{2bc17a1e-8a1c-45f2-9fe8-1416f93f7e10}</Project>
+      <Name>EmploTaskTwo.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmploTaskTwo.Domain\EmploTaskTwo.Domain.csproj">
       <Project>{cc2343ce-e6d6-4a00-a6d1-5f08036ac5a7}</Project>
       <Name>EmploTaskTwo.Domain</Name>

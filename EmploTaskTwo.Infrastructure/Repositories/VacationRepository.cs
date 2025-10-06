@@ -1,6 +1,8 @@
-﻿using EmploTaskTwo.Domain.Entities;
+﻿using EmploTaskTwo.Core.Constants;
+using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Repositories;
 using EmploTaskTwo.Infrastructure.Mappers;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using EFEntities = EmploTaskTwo.Infrastructure.Context;
@@ -52,6 +54,11 @@ namespace EmploTaskTwo.Infrastructure.Repositories
 
         public IQueryable<Vacation> GetVacationsForYear(int year)
         {
+            if (year < ApplicationConstants.MinYear)
+            {
+                throw new ArgumentException(ApplicationConstants.ErrorInvalidYear, nameof(year));
+            }
+
             return _context.Vacations
                 .Where(v => v.DateSince.Year == year || v.DateUntil.Year == year)
                 .Select(v => VacationMapper.ToDomain(v))

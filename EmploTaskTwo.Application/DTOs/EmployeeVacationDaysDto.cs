@@ -5,6 +5,5 @@
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public double DaysUsed { get; set; }
-        public int Year { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace EmploTaskTwo.Application.Services
             return _teamRepository.GetTeamsWithNoVacationInYear(year);
         }
 
-        public IEnumerable<EmployeeVacationDaysDto> GetVacationDaysUsedCurrentYear()
+        public IEnumerable<EmployeeVacationDaysDto> GetEmployeesWithUsedVacationDaysCurrentYear()
         {
             var currentYear = _currentDateProvider().Year;
             var employees = _employeeRepository.GetVacationDaysUsedByEmployeesForYear(currentYear);
@@ -53,14 +53,13 @@ namespace EmploTaskTwo.Application.Services
             {
                 EmployeeId = e.Id,
                 EmployeeName = e.Name,
-                DaysUsed = CalculateVacationDays(e, currentYear),
-                Year = currentYear
+                DaysUsed = CalculateVacationDays(e, currentYear)
             }).ToList();
         }
 
         private double CalculateVacationDays(Employee employee, int year)
         {
-            var vacations = _vacationRepository.GetVacationsForYear(employee.Id, year);
+            var vacations = _vacationRepository.GetEmployeeVacationsForYear(employee.Id, year);
 
             if (vacations == null || !vacations.Any())
             {

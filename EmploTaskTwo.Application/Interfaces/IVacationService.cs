@@ -7,7 +7,7 @@ namespace EmploTaskTwo.Application.Interfaces
     public interface IVacationService
     {
         IEnumerable<Employee> GetEmployeesWithVacationInYear(string teamName, int year);
-        IEnumerable<EmployeeVacationDaysDto> GetVacationDaysUsedCurrentYear();
+        IEnumerable<EmployeeVacationDaysDto> GetEmployeesWithUsedVacationDaysCurrentYear();
         IEnumerable<Team> GetTeamsWithNoVacationInYear(int year);
     }
 }

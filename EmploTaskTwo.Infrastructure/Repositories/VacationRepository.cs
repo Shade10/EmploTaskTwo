@@ -52,7 +52,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Vacation> GetVacationsForYear(int employeeId, int year)
+        public IQueryable<Vacation> GetEmployeeVacationsForYear(int employeeId, int year)
         {
             if (year < ApplicationConstants.MinYear)
             {

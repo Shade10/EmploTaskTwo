@@ -1,7 +1,6 @@
 ﻿using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Repositories;
 using EmploTaskTwo.Infrastructure.Mappers;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using EFEntities = EmploTaskTwo.Infrastructure.Context;

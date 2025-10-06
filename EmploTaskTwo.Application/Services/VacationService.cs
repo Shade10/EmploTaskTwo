@@ -110,6 +110,33 @@ namespace EmploTaskTwo.Application.Services
             return freeDays < ApplicationConstants.MinFreeVacationDays ? ApplicationConstants.MinFreeVacationDays : freeDays;
         }
 
+        public bool IfEmployeeCanRequestVacation(Employee employee, List<Vacation> vacations, VacationPackage vacationPackage)
+        {
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee), ApplicationConstants.ErrorNullEmployee);
+            }
+
+            if (vacations == null)
+            {
+                throw new ArgumentNullException(nameof(vacations), ApplicationConstants.ErrorNullVacations);
+            }
+
+            if (vacationPackage == null)
+            {
+                throw new ArgumentNullException(nameof(vacationPackage), ApplicationConstants.ErrorNullVacationPackage);
+            }
+
+            int freeDays = CountFreeDaysForEmployee(employee, vacations, vacationPackage);
+
+            if (freeDays <= ApplicationConstants.MinFreeVacationDays)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private void ValidateTeamName(string teamName)
         {
             if (string.IsNullOrWhiteSpace(teamName))

@@ -45,11 +45,11 @@
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Entities\Vacation.cs" />
     <Compile Include="Entities\VacationPackage.cs" />
-    <Compile Include="Interfaces\IEmployeeRepository.cs" />
+    <Compile Include="Repositories\IEmployeeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTOs\" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\ITeamRepository.cs" />
+    <Compile Include="Repositories\IVacationRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

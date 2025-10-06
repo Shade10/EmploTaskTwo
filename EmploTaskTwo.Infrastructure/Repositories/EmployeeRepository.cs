@@ -1,20 +1,22 @@
 ﻿using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Interfaces;
+using EmploTaskTwo.Infrastructure.Mappers;
+using System.Collections.Generic;
 using System.Linq;
-using dbContext = EmploTaskTwo.Infrastructure.Context;
+using EFEntities = EmploTaskTwo.Infrastructure.Context;
 
 namespace EmploTaskTwo.Infrastructure.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly dbContext.EmploTaskDBContext _context;
+        private readonly EFEntities.EmploTaskDBContext _context;
 
-        public EmployeeRepository(dbContext.EmploTaskDBContext context)
+        public EmployeeRepository(EFEntities.EmploTaskDBContext context)
         {
             _context = context;
         }
 
-        public void Add(Employee employee)
+        public void Add(Employee entity)
         {
             throw new System.NotImplementedException();
         }
@@ -24,22 +26,27 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public void Update(Employee employee)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Employee GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<Employee> GetEmployees()
+        public IList<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year)
         {
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<Team> GetTeams()
+        public IList<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay = 8)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IQueryable<Employee> Query()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Update(Employee entity)
         {
             throw new System.NotImplementedException();
         }

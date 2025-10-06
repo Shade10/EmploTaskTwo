@@ -41,7 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\EmployeeVacationDaysDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\IVacationService.cs" />
+    <Compile Include="Services\VacationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmploTaskTwo.Domain\EmploTaskTwo.Domain.csproj">
+      <Project>{cc2343ce-e6d6-4a00-a6d1-5f08036ac5a7}</Project>
+      <Name>EmploTaskTwo.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

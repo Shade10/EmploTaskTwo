@@ -77,6 +77,10 @@
     <Compile Include="Context\VacationPackage.cs">
       <DependentUpon>EmploTaskDBContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\EmployeeMapper.cs" />
+    <Compile Include="Mappers\TeamMapper.cs" />
+    <Compile Include="Mappers\VacationMapper.cs" />
+    <Compile Include="Mappers\VacationPackageMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
   </ItemGroup>
@@ -92,12 +96,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmploTaskTwo.Domain\EmploTaskTwo.Domain.csproj">
-      <Project>{CC2343CE-E6D6-4A00-A6D1-5F08036AC5A7}</Project>
-      <Name>EmploTaskTwo.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Context\EmploTaskDBContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EmploTaskDBContext.edmx</DependentUpon>
@@ -111,6 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmploTaskTwo.Domain\EmploTaskTwo.Domain.csproj">
+      <Project>{cc2343ce-e6d6-4a00-a6d1-5f08036ac5a7}</Project>
+      <Name>EmploTaskTwo.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

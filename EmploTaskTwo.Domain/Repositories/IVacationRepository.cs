@@ -6,6 +6,6 @@ namespace EmploTaskTwo.Domain.Repositories
 {
     public interface IVacationRepository : IRepository<Vacation>
     {
-        IQueryable<Vacation> GetVacationsForYear(int year);
+        IQueryable<Vacation> GetVacationsForYear(int employeeId, int year);
     }
 }

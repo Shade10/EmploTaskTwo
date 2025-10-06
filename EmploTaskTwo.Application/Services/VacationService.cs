@@ -15,45 +15,38 @@ namespace EmploTaskTwo.Application.Services
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITeamRepository _teamRepository;
         private readonly IVacationRepository _vacationRepository;
+        private readonly Func<DateTime> _currentDateProvider;
 
         public VacationService(
             IEmployeeRepository employeeRepository,
             ITeamRepository teamRepository,
-            IVacationRepository vacationRepository)
+            IVacationRepository vacationRepository,
+            Func<DateTime> currentDateProvider = null)
         {
             _employeeRepository = employeeRepository;
             _teamRepository = teamRepository;
             _vacationRepository = vacationRepository;
+            _currentDateProvider = currentDateProvider ?? (() => DateTime.Now);
         }
 
         public IEnumerable<Employee> GetEmployeesWithVacationInYear(string teamName, int year)
         {
-            if (string.IsNullOrWhiteSpace(teamName))
-            {
-                throw new ArgumentException(ApplicationConstants.ErrorEmptyTeamName, nameof(teamName));
-            }
-
-            if (year < ApplicationConstants.MinYear)
-            {
-                throw new ArgumentException(ApplicationConstants.ErrorInvalidYear, nameof(year));
-            }
+            ValidateTeamName(teamName);
+            ValidateYear(year);
 
             return _employeeRepository.GetEmployeesInTeamWithVacationInYear(teamName, year);
         }
 
         public IEnumerable<Team> GetTeamsWithNoVacationInYear(int year)
         {
-            if (year < ApplicationConstants.MinYear)
-            {
-                throw new ArgumentException(ApplicationConstants.ErrorInvalidYear, nameof(year));
-            }
+            ValidateYear(year);
 
             return _teamRepository.GetTeamsWithNoVacationInYear(year);
         }
 
         public IEnumerable<EmployeeVacationDaysDto> GetVacationDaysUsedCurrentYear()
         {
-            var currentYear = DateTime.Now.Year;
+            var currentYear = _currentDateProvider().Year;
             var employees = _employeeRepository.GetVacationDaysUsedByEmployeesForYear(currentYear);
 
             return employees.Select(e => new EmployeeVacationDaysDto
@@ -67,21 +60,37 @@ namespace EmploTaskTwo.Application.Services
 
         private double CalculateVacationDays(Employee employee, int year)
         {
-            if (employee?.Vacations == null || !employee.Vacations.Any())
+            var vacations = _vacationRepository.GetVacationsForYear(employee.Id, year);
+
+            if (vacations == null || !vacations.Any())
             {
                 return default;
             }
 
-            var hoursUsed = employee.Vacations
-                .Where(v => v.DateSince.Year == year && v.DateUntil < DateTime.Now)
-                .Sum(v => v.NumberOfHours);
+            var hoursUsed = vacations.Sum(v => v.NumberOfHours);
 
-            if(hoursUsed == default)
+            if (hoursUsed == default)
             {
                 return default;
             }
 
             return hoursUsed / ApplicationConstants.HoursPerWorkDay;
+        }
+
+        private void ValidateTeamName(string teamName)
+        {
+            if (string.IsNullOrWhiteSpace(teamName))
+            {
+                throw new ArgumentException(ApplicationConstants.ErrorEmptyTeamName, nameof(teamName));
+            }
+        }
+
+        private void ValidateYear(int year)
+        {
+            if (year < ApplicationConstants.MinYear)
+            {
+                throw new ArgumentException(ApplicationConstants.ErrorInvalidYear, nameof(year));
+            }
         }
     }
 }

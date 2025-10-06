@@ -52,7 +52,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Vacation> GetVacationsForYear(int year)
+        public IQueryable<Vacation> GetVacationsForYear(int employeeId, int year)
         {
             if (year < ApplicationConstants.MinYear)
             {
@@ -60,6 +60,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             }
 
             return _context.Vacations
+                .Where(v => v.EmployeeId == employeeId)
                 .Where(v => v.DateSince.Year == year || v.DateUntil.Year == year)
                 .Select(v => VacationMapper.ToDomain(v))
                 .AsQueryable();

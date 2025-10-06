@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmploTaskTwo.Tests", "EmploTaskTwo.Tests\EmploTaskTwo.Tests.csproj", "{C996247D-2E48-471C-A8BC-88776897EBF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{024805E1-D347-43C4-B4C6-8C23A49A0908}"
+	ProjectSection(SolutionItems) = preProject
+		DB\EmploTaskOne.bak = DB\EmploTaskOne.bak
+		DB\EmploTaskTwo.bak = DB\EmploTaskTwo.bak
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

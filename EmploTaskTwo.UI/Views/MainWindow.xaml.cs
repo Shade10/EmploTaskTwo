@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EmploTaskTwo.UI
+namespace EmploTaskTwo.UI.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

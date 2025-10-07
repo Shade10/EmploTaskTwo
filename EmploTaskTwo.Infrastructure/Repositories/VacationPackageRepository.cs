@@ -19,13 +19,18 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<VacationPackage> Query()
         {
             return _context.VacationPackages
+                .AsNoTracking()
                 .Select(v => VacationPackageMapper.ToDomain(v))
                 .AsQueryable();
         }
 
         public VacationPackage GetById(int id)
         {
-            return VacationPackageMapper.ToDomain(_context.VacationPackages.Find(id));
+            return _context.VacationPackages
+                .AsNoTracking()
+                .Select(v => VacationPackageMapper.ToDomain(v))
+                .Where(v => v.Id == id)
+                .FirstOrDefault();
         }
 
         public void Add(VacationPackage entity)

@@ -21,12 +21,19 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<Vacation> Query()
         {
             return _context.Vacations
+                .AsNoTracking()
                 .Select(v => VacationMapper.ToDomain(v))
                 .AsQueryable();
         }
 
         public Vacation GetById(int id)
         {
+            return _context.Vacations
+                .AsNoTracking()
+                .Select(v => VacationMapper.ToDomain(v))
+                .Where(v => v.Id == id)
+                .FirstOrDefault();
+
             return VacationMapper.ToDomain(_context.Vacations.Find(id));
         }
 
@@ -60,6 +67,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
             }
 
             return _context.Vacations
+                .AsNoTracking()
                 .Where(v => v.EmployeeId == employeeId)
                 .Where(v => v.DateSince.Year == year || v.DateUntil.Year == year)
                 .Select(v => VacationMapper.ToDomain(v))

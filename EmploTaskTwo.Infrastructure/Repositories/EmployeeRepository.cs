@@ -20,13 +20,18 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<Employee> Query()
         {
             return _context.Employees
+                .AsNoTracking()
                 .Select(e => EmployeeMapper.ToDomain(e))
                 .AsQueryable();
         }
 
         public Employee GetById(int id)
         {
-            return EmployeeMapper.ToDomain(_context.Employees.Find(id));
+            return _context.Employees
+                .AsNoTracking()
+                .Select(e => EmployeeMapper.ToDomain(e))
+                .Where(e => e.Id == id)
+                .FirstOrDefault();
         }
 
         public void Add(Employee entity)
@@ -54,6 +59,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<Employee> GetEmployeesInTeamWithVacationInYear(string teamName, int year)
         {
             return _context.Employees
+                .AsNoTracking()
                 .Where(e => e.Team.Name == teamName && e.Vacations.Any(v => v.DateSince.Year == year))
                 .Select(e => EmployeeMapper.ToDomain(e))
                 .AsQueryable();
@@ -62,6 +68,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<Employee> GetVacationDaysUsedByEmployeesForYear(int year, int hoursPerWorkDay)
         {
             return _context.Employees
+                .AsNoTracking()
                 .Where(e => e.Vacations.Any(v => v.DateSince.Year == year && v.DateUntil < DateTime.Now))
                 .Select(e => EmployeeMapper.ToDomain(e))
                 .AsQueryable();

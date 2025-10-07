@@ -19,13 +19,18 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<Team> Query()
         {
             return _context.Teams
+                .AsNoTracking()
                 .Select(t => TeamMapper.ToDomain(t))
                 .AsQueryable();
         }
 
         public Team GetById(int id)
         {
-            return TeamMapper.ToDomain(_context.Teams.Find(id));
+            return _context.Teams
+                .AsNoTracking()
+                .Select(t => TeamMapper.ToDomain(t))
+                .Where(t => t.Id == id)
+                .FirstOrDefault();
         }
 
         public void Add(Team team)
@@ -53,6 +58,7 @@ namespace EmploTaskTwo.Infrastructure.Repositories
         public IQueryable<Team> GetTeamsWithNoVacationInYear(int year)
         {
             return _context.Teams
+                .AsNoTracking()
                 .Where(t => !t.Employees
                     .Any(e => e.Vacations
                         .Any(v => v.DateSince.Year == year)))

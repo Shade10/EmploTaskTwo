@@ -1,3 +1,6 @@
+Zadania wykonane: 2 - 6
+zadanie 6 znajduje się na dole w readme
+
 Jako że do oceny miała włynąć struktura projektu to sam projekt został opracowany w oparciu o Domain-Driven Design (DDD) oraz SOLID (pomimo że to mały projekcik i mało się w nim dzieje obecnie :D)
 Celem było stworzenie czytelnej, skalowalnej i łatwej w utrzymaniu architektury aplikacji WPF opartej o .NET Framework 4.8 oraz Entity Framework (z plikiem EDMX) + LINQ.
 

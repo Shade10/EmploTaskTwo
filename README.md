@@ -41,3 +41,69 @@ EmploTaskTwo.UnitTests – testy jednostkowe oparte o framework NUnit oraz bibli
 Stosowane mocki (EmployeeMockData, VacationMockData) umożliwiają testowanie logiki aplikacji bez rzeczywistej bazy danych.
 Testy zostały napisane zgodnie z zasadą Arrange-Act-Assert.
 
+
+Zadanie 6
+
+<br />
+
+1) Eager loading - jako że domyślnie EF korzysta z lazy loading czyli każde odwołanie do właściwości nawigacyjnej (np. employee.Vacations) co generuje osobne zapytanie SQL 
+to zamiast tego można wczytać wszystkie potrzebne dane od razu jednym zapytaniem po przez Include.
+
+Przykład: 
+
+var employee = _context.Employees <br />
+    .Include(e => e.Vacations) <br />
+    .FirstOrDefault(e => e.Id == employeeId); 
+
+  <br />
+
+2) Batching / Preloading danych
+
+Możemy pobrać za jednym razem więcej danych i je przechowywać zamiast naprzykład robić tego w pętli
+
+Przykład:
+
+var employeeIds = employees.Select(e => e.Id).ToList();
+
+var vacations = context.Vacations <br />
+    .Where(v => employeeIds.Contains(v.EmployeeId)) <br />
+    .ToList();
+
+<br />
+
+3) AsNoTracking()
+
+Jeśli dane mają być tylko odczytane, nie muszą być śledzone przez kontekst EF.
+Wyłączenie ich „trackingu” przyspieszy i zmniejszy obciążenie pamięci. (wykorzystałem to w projekcie)
+
+<br />
+
+4) Agregacje po stronie SQL 
+
+Zamiast pobierać pełne dane i wykonywać część operacji jak sumowanie w C#, można to zrobić po stronie SQL.
+
+Przykład:
+
+int totalHoursUsed = context.Vacations <br />
+    .Where(v => v.EmployeeId == employeeId && v.DateSince.Year == currentYear) <br />
+    .Sum(v => v.NumberOfHours);
+
+możemy też użyć GROUP BY by znacąco ograniczyć ilość zapytań dla wielu jednostek
+
+<br />
+
+ 5) Zamiast pobierać całe encje z bazy możemy wybrać co naprawdę jest nam potrzebne. 
+
+Przykład:
+
+var employeeData = _context.Employees <br />
+    .Where(e => e.Id == employeeId) <br />
+    .Select(e => new  <br />
+    { <br />
+        e.Id, <br />
+        e.Name, <br />
+        Vacations = e.Vacations <br />
+            .Where(v => v.DateSince.Year == currentYear) <br />
+            .Select(v => new { v.NumberOfHours }) <br />
+    }) <br />
+    .FirstOrDefault();

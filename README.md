@@ -1,5 +1,5 @@
-Zadania wykonane: 2 - 6 <br />
-zadanie 6 znajduje się na dole w readme
+# Zadania wykonane: 2 - 6 <br />
+## zadanie 6 znajduje się na dole w readme
 
 Jako że do oceny miała włynąć struktura projektu to sam projekt został opracowany w oparciu o Domain-Driven Design (DDD) oraz SOLID (pomimo że to mały projekcik i mało się w nim dzieje obecnie :D)
 Celem było stworzenie czytelnej, skalowalnej i łatwej w utrzymaniu architektury aplikacji WPF opartej o .NET Framework 4.8 oraz Entity Framework (z plikiem EDMX) + LINQ.
@@ -11,13 +11,13 @@ Część UI nie została dokończona, miała w prosty graficzny sposób prezento
 zadanie nie było wymagane więc na tą chwilę jest nie dokończone, możliwe że uda się dokończyć przed sprawdzeniem :)
 
 
- Zastosowane wzorce
+# Zastosowane wzorce
 
-DDD – rozdzielenie logiki domenowej, aplikacyjnej i infrastrukturalnej.
+DDD – rozdzielenie logiki domenowej, aplikacyjnej i infrastrukturalnej. <br />
 SOLID – każda klasa ma pojedynczą odpowiedzialność (Single Responsibility Principle).
 
 
- Architektura warstwowa
+# Architektura warstwowa
 
 Projekt został podzielony na niezależne warstwy zgodne z zasadami DDD:
 
@@ -45,11 +45,11 @@ Stosowane mocki (EmployeeMockData, VacationMockData) umożliwiają testowanie lo
 Testy zostały napisane zgodnie z zasadą Arrange-Act-Assert.
 
 
-Zadanie 6
+# Zadanie 6
 
-<br />
 
-1) Eager loading - jako że domyślnie EF korzysta z lazy loading czyli każde odwołanie do właściwości nawigacyjnej (np. employee.Vacations) co generuje osobne zapytanie SQL 
+## 1) Eager loading  
+jako że domyślnie EF korzysta z lazy loading czyli każde odwołanie do właściwości nawigacyjnej (np. employee.Vacations) co generuje osobne zapytanie SQL 
 to zamiast tego można wczytać wszystkie potrzebne dane od razu jednym zapytaniem po przez Include.
 
 Przykład: 
@@ -60,7 +60,7 @@ var employee = _context.Employees <br />
 
   <br />
 
-2) Batching / Preloading danych
+## 2) Batching / Preloading danych
 
 Możemy pobrać za jednym razem więcej danych i je przechowywać zamiast naprzykład robić tego w pętli
 
@@ -74,14 +74,14 @@ var vacations = context.Vacations <br />
 
 <br />
 
-3) AsNoTracking()
+## 3) AsNoTracking()
 
 Jeśli dane mają być tylko odczytane, nie muszą być śledzone przez kontekst EF.
 Wyłączenie ich „trackingu” przyspieszy i zmniejszy obciążenie pamięci. (wykorzystałem to w projekcie)
 
 <br />
 
-4) Agregacje po stronie SQL 
+## 4) Agregacje po stronie SQL 
 
 Zamiast pobierać pełne dane i wykonywać część operacji jak sumowanie w C#, można to zrobić po stronie SQL.
 
@@ -95,7 +95,7 @@ możemy też użyć GROUP BY by znacąco ograniczyć ilość zapytań dla wielu 
 
 <br />
 
- 5) Zamiast pobierać całe encje z bazy możemy wybrać co naprawdę jest nam potrzebne. 
+## 5) Zamiast pobierać całe encje z bazy możemy wybrać co naprawdę jest nam potrzebne. 
 
 Przykład:
 

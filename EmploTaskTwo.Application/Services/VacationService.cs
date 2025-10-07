@@ -1,6 +1,7 @@
 ﻿using EmploTaskTwo.Application.DTOs;
 using EmploTaskTwo.Application.Interfaces;
 using EmploTaskTwo.Core.Constants;
+using EmploTaskTwo.Core.Interfaces;
 using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Interfaces;
 using EmploTaskTwo.Domain.Repositories;
@@ -15,18 +16,18 @@ namespace EmploTaskTwo.Application.Services
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITeamRepository _teamRepository;
         private readonly IVacationRepository _vacationRepository;
-        private readonly Func<DateTime> _currentDateProvider;
+        private readonly IDateProvider _dateProvider;
 
         public VacationService(
             IEmployeeRepository employeeRepository,
             ITeamRepository teamRepository,
             IVacationRepository vacationRepository,
-            Func<DateTime> currentDateProvider = null)
+            IDateProvider dateProvider)
         {
             _employeeRepository = employeeRepository;
             _teamRepository = teamRepository;
             _vacationRepository = vacationRepository;
-            _currentDateProvider = currentDateProvider ?? (() => DateTime.Now);
+            _dateProvider = dateProvider;
         }
 
         public IEnumerable<Employee> GetEmployeesWithVacationInYear(string teamName, int year)
@@ -46,7 +47,7 @@ namespace EmploTaskTwo.Application.Services
 
         public IEnumerable<EmployeeVacationDaysDto> GetEmployeesWithUsedVacationDaysCurrentYear()
         {
-            var currentYear = _currentDateProvider().Year;
+            var currentYear = _dateProvider.CurrentYear;
             var employees = _employeeRepository.GetVacationDaysUsedByEmployeesForYear(currentYear);
 
             return employees.Select(e => new EmployeeVacationDaysDto
@@ -93,10 +94,8 @@ namespace EmploTaskTwo.Application.Services
                 throw new ArgumentNullException(nameof(vacationPackage), ApplicationConstants.ErrorNullVacationPackage);
             }
 
-            var currentYear = DateTime.Now.Year;
-
             var hoursUsed = vacations
-                .Where(v => v.EmployeeId == employee.Id && v.DateSince.Year == currentYear && v.DateUntil < DateTime.Now)
+                .Where(v => v.EmployeeId == employee.Id && v.DateSince.Year == _dateProvider.CurrentYear && v.DateUntil < _dateProvider.Now)
                 .Sum(v => v.NumberOfHours);
 
             if (hoursUsed == default)

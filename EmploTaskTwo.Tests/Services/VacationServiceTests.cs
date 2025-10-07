@@ -1,4 +1,5 @@
 ﻿using EmploTaskTwo.Application.Services;
+using EmploTaskTwo.Core.Interfaces;
 using EmploTaskTwo.Domain.Entities;
 using EmploTaskTwo.Domain.Interfaces;
 using EmploTaskTwo.Domain.Repositories;
@@ -17,6 +18,8 @@ namespace EmploTaskTwo.Tests.Services
         private Mock<IEmployeeRepository> _employeeRepoMock;
         private Mock<ITeamRepository> _teamRepoMock;
         private Mock<IVacationRepository> _vacationRepoMock;
+        private Mock<IDateProvider> _dateProviderMock;
+        private IDateProvider _dateProvider;
         private VacationService _vacationService;
 
         [SetUp]
@@ -25,18 +28,24 @@ namespace EmploTaskTwo.Tests.Services
             _employeeRepoMock = new Mock<IEmployeeRepository>();
             _teamRepoMock = new Mock<ITeamRepository>();
             _vacationRepoMock = new Mock<IVacationRepository>();
+            _dateProviderMock = new Mock<IDateProvider>();
+
+            _dateProviderMock.Setup(d => d.Now).Returns(DateTime.Now);
+            _dateProviderMock.Setup(d => d.CurrentYear).Returns(DateTime.Now.Year);
+            _dateProvider = _dateProviderMock.Object;
 
             _vacationService = new VacationService(
                 _employeeRepoMock.Object,
                 _teamRepoMock.Object,
-                _vacationRepoMock.Object);
+                _vacationRepoMock.Object,
+                _dateProvider);
         }
 
         [Test]
         public void employee_can_request_vacation()
         {
             // Arrange
-            int currentYear = DateTime.Now.Year;
+            int currentYear = _dateProvider.CurrentYear;
             var employees = EmployeeMockData.GetEmployeesWithVacations(currentYear);
             var vacations = VacationMockData.GetVacationsForYear(currentYear).ToList();
             var employee = employees.First();
@@ -65,7 +74,7 @@ namespace EmploTaskTwo.Tests.Services
         public void employee_cant_request_vacation()
         {
             // Arrange
-            int currentYear = DateTime.Now.Year;
+            int currentYear = _dateProvider.CurrentYear;
             var employees = EmployeeMockData.GetEmployeesWithoutVacations();
             var vacations = VacationMockData.GetVacationsForYear(currentYear).ToList();
             var employee = employees.First();
